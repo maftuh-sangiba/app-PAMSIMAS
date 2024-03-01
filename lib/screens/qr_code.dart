@@ -11,6 +11,7 @@ class QRScannerPage extends StatefulWidget {
 class _QRScannerPageState extends State<QRScannerPage> {
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
   late QRViewController controller;
+  bool _isDialogShowing = false;
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +35,58 @@ class _QRScannerPageState extends State<QRScannerPage> {
     controller.scannedDataStream.listen((scanData) {
       // Pass scanData to wherever you want
       String? resultScan = scanData.code;
-      Navigator.pop(context, resultScan); // Pop the QR Scanner page with result
+
+      if (!_isDialogShowing) {
+        // Check if dialog is not already showing
+        _isDialogShowing =
+            true; // Set flag to true to indicate dialog is showing
+
+        // Show dialog with resultScan and TextFormField
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return PopScope(
+              child: AlertDialog(
+                title: const Text('Scanned QR Code'),
+                content: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(resultScan ?? 'No QR code scanned'),
+                    const SizedBox(height: 16),
+                    TextFormField(
+                      decoration: const InputDecoration(
+                        labelText: 'Enter something...',
+                        border: OutlineInputBorder(),
+                      ),
+                    ),
+                  ],
+                ),
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: () {
+                      Navigator.popAndPushNamed(
+                          context, '/home'); // Close the dialog
+                      _isDialogShowing =
+                          false; // Reset flag when dialog is closed
+                    },
+                    child: const Text('Kirim'),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.popAndPushNamed(
+                          context, '/home'); // Close the dialog
+                      _isDialogShowing =
+                          false; // Reset flag when dialog is closed
+                    },
+                    child: const Text('Batal'),
+                  ),
+                ],
+              ),
+            );
+          },
+        );
+      }
     });
   }
 

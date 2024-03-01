@@ -75,10 +75,12 @@ class _HomePageState extends State<HomePage> {
       }
     } catch (error) {
       // Error occurred while checking token validity
-      setState(() {
-        _isLoading = false;
-        _errorMessage = 'Error: $error';
-      });
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+          _errorMessage = 'Error: $error';
+        });
+      }
     }
   }
 }
@@ -170,7 +172,7 @@ class MainPageWidget extends StatelessWidget {
                     ),
                     ElevatedButton(
                       onPressed: () {
-                        Navigator.pushNamed(context, '/qr');
+                        Navigator.popAndPushNamed(context, '/qr');
                       },
                       child: const Text(
                         "Scan Disini",

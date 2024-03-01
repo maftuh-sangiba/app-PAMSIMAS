@@ -1,6 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+String urlApi = 'http://192.168.0.104';
+
 class AuthService {
   static Future<bool> checkToken() async {
     // SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -16,7 +18,7 @@ class AuthService {
 
   static Future<bool> verifyTokenValidity(String token) async {
     Dio dio = Dio();
-    String url = 'http://10.0.2.2/system-PAMSIMAS/api/checkToken';
+    String url = '$urlApi/system-PAMSIMAS/api/checkToken';
 
     try {
       Response response = await dio.request(
@@ -43,7 +45,7 @@ class AuthService {
 
   static Future getUserDetail(String token) async {
     Dio dio = Dio();
-    String url = 'http://10.0.2.2/system-PAMSIMAS/api/checkToken';
+    String url = '$urlApi/system-PAMSIMAS/api/checkToken';
 
     try {
       Response response = await dio.request(
@@ -68,13 +70,18 @@ class AuthService {
     }
   }
 
-  static Future<Map<String, dynamic>> login(String email, String password) async {
+  static Future<Map<String, dynamic>> login(
+      String email, String password) async {
     try {
       Dio dio = Dio();
-      String url = 'http://10.0.2.2/system-PAMSIMAS/api/login';
+      String url = '$urlApi/system-PAMSIMAS/api/login';
       Response response = await dio.post(
         url,
         data: {'email': email, 'password': password},
+        options: Options(
+          sendTimeout: const Duration(seconds: 60),
+          receiveTimeout: const Duration(seconds: 60),
+        ),
       );
 
       return response.data;
