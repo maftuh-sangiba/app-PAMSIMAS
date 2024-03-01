@@ -106,4 +106,49 @@ class AuthService {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.remove('token');
   }
+
+  static Future<Map<String, dynamic>> storeData(
+      String resultScan, String dataPemakaian) async {
+    String? token = await getToken();
+
+    if (token != null) {
+      Dio dio = Dio();
+      String url = '$urlApi/system-PAMSIMAS/api/penggunaan/store';
+
+      try {
+        Response response = await dio.post(
+          url,
+          data: {
+            'nomor_meteran': resultScan,
+            'data_pemakaian': dataPemakaian,
+          },
+          options: Options(
+            headers: {'Authorization': 'Bearer $token'},
+          ),
+        );
+
+        if (response.statusCode == 200) {
+          // Check response status
+          return response.data;
+        } else {
+          // Handle non-200 status codes
+          return {
+            'status': 'error',
+            'msg': 'Failed to store data. Status code: ${response.statusCode}'
+          };
+        }
+      } catch (error) {
+        // Handle error
+        print('Error storing data: $error');
+        return {'status': 'error', 'msg': 'Error storing data: $error'};
+      }
+    } else {
+      // Handle token not found
+      print('Token not found. User is not logged in.');
+      return {
+        'status': 'error',
+        'msg': 'Token not found. User is not logged in.'
+      };
+    }
+  }
 }
