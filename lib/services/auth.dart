@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-String urlApi = 'http://192.168.141.179';
+String urlApi = 'http://192.168.0.108';
 
 class AuthService {
   static Future<bool> checkToken() async {
