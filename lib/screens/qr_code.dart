@@ -74,6 +74,17 @@ class _QRScannerPageState extends State<QRScannerPage> {
                 ),
                 actions: <Widget>[
                   TextButton(
+                    onPressed: () {
+                      controller.stopCamera();
+                      if (context.mounted) {
+                        Navigator.popAndPushNamed(context, '/home');
+                      } // Close the dialog
+                      _isDialogShowing =
+                          false; // Reset flag when dialog is closed
+                    },
+                    child: const Text('Batal'),
+                  ),
+                  TextButton(
                     onPressed: () async {
                       String resultScan = scanData.code ?? '';
                       String textFieldValue = textFieldController
@@ -95,28 +106,25 @@ class _QRScannerPageState extends State<QRScannerPage> {
                         // Do something, e.g., show a success message
                         EasyLoading.showSuccess(response['msg']);
                         await Future.delayed(const Duration(seconds: 2));
-                        Navigator.popAndPushNamed(context, '/home');
+                        controller.stopCamera();
+                        if (context.mounted) {
+                          Navigator.popAndPushNamed(context, '/home');
+                        }
                       } else {
                         // Error occurred while storing data
                         // Do something, e.g., show an error message
                         EasyLoading.showError(response['msg']);
                         await Future.delayed(const Duration(seconds: 2));
-                        Navigator.popAndPushNamed(context, '/home');
+                        controller.stopCamera();
+                        if (context.mounted) {
+                          Navigator.popAndPushNamed(context, '/home');
+                        }
                       }
 
                       _isDialogShowing =
                           false; // Reset flag when dialog is closed
                     },
                     child: const Text('Kirim'),
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      Navigator.popAndPushNamed(
-                          context, '/home'); // Close the dialog
-                      _isDialogShowing =
-                          false; // Reset flag when dialog is closed
-                    },
-                    child: const Text('Batal'),
                   ),
                 ],
               ),

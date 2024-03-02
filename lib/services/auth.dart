@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-String urlApi = 'http://192.168.0.104';
+String urlApi = 'http://192.168.141.179';
 
 class AuthService {
   static Future<bool> checkToken() async {
@@ -38,7 +38,7 @@ class AuthService {
       }
     } catch (e) {
       // Error occurred during token verification
-      print('Error verifying token: $e');
+      // print('Error verifying token: $e');
       return false;
     }
   }
@@ -65,7 +65,7 @@ class AuthService {
       }
     } catch (e) {
       // Error occurred during token verification
-      print('Error verifying token: $e');
+      // print('Error verifying token: $e');
       return false;
     }
   }
@@ -86,7 +86,7 @@ class AuthService {
 
       return response.data;
     } catch (error) {
-      print('Error logging in: $error');
+      // print('Error logging in: $error');
       return {'message': 'Failed to login'};
     }
   }
@@ -120,7 +120,7 @@ class AuthService {
           url,
           data: {
             'nomor_meteran': resultScan,
-            'data_pemakaian': dataPemakaian,
+            'pemakaian': dataPemakaian,
           },
           options: Options(
             headers: {'Authorization': 'Bearer $token'},
@@ -139,12 +139,12 @@ class AuthService {
         }
       } catch (error) {
         // Handle error
-        print('Error storing data: $error');
+        // print('Error storing data: $error');
         return {'status': 'error', 'msg': 'Error storing data: $error'};
       }
     } else {
       // Handle token not found
-      print('Token not found. User is not logged in.');
+      // print('Token not found. User is not logged in.');
       return {
         'status': 'error',
         'msg': 'Token not found. User is not logged in.'
