@@ -172,7 +172,7 @@ class MainPageWidget extends StatelessWidget {
                     ),
                     ElevatedButton(
                       onPressed: () {
-                        Navigator.popAndPushNamed(context, '/qr');
+                        Navigator.pushNamed(context, '/qr');
                       },
                       child: const Text(
                         "Scan Disini",
