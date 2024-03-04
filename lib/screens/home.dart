@@ -62,7 +62,6 @@ class _HomePageState extends State<HomePage> {
       var response = await AuthService.getUserDetail(token);
 
       if (response.statusCode == 200) {
-        // Token is valid, update UI with user data
         setState(() {
           _isLoading = false;
           _errorMessage = '';
@@ -70,11 +69,9 @@ class _HomePageState extends State<HomePage> {
         });
       } else {
         if (!mounted) return;
-        // Invalid token, navigate to login page
         Navigator.pushReplacementNamed(context, '/login');
       }
     } catch (error) {
-      // Error occurred while checking token validity
       if (mounted) {
         setState(() {
           _isLoading = false;
@@ -132,12 +129,15 @@ class MainPageWidget extends StatelessWidget {
             padding: const EdgeInsets.all(10.0),
             child: Container(
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  gradient: LinearGradient(colors: [
+                borderRadius: BorderRadius.circular(20),
+                gradient: LinearGradient(
+                  colors: [
                     Colors.blue.shade900,
                     Colors.blue.shade700,
                     Colors.blue.shade500,
-                  ])),
+                  ],
+                ),
+              ),
               child: Center(
                 child: Text(
                   'Halo selamat datang ${_userData['user_name']}',
@@ -155,12 +155,15 @@ class MainPageWidget extends StatelessWidget {
             padding: const EdgeInsets.all(10.0),
             child: Container(
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  gradient: LinearGradient(colors: [
+                borderRadius: BorderRadius.circular(20),
+                gradient: LinearGradient(
+                  colors: [
                     Colors.blue.shade900,
                     Colors.blue.shade700,
                     Colors.blue.shade500,
-                  ])),
+                  ],
+                ),
+              ),
               child: Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,

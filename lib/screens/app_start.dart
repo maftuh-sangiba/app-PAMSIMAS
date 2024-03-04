@@ -8,17 +8,14 @@ class AppStart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    
     return FutureBuilder<bool>(
       future: AuthService.checkToken(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          // While waiting for the token check, show a loading indicator
           return const Scaffold(
             body: Center(child: CircularProgressIndicator()),
           );
         } else {
-          // Navigate to appropriate page based on token validity
           if (snapshot.hasData && snapshot.data!) {
             return const HomePage();
           } else {

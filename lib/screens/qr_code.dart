@@ -35,38 +35,65 @@ class _QRScannerPageState extends State<QRScannerPage> {
   void _onQRViewCreated(QRViewController controller) {
     this.controller = controller;
     controller.scannedDataStream.listen((scanData) {
-      // Pass scanData to wherever you want
       String? resultScan = scanData.code;
       final TextEditingController textFieldController = TextEditingController();
 
       if (!_isDialogShowing) {
-        // Check if dialog is not already showing
-        _isDialogShowing =
-            true; // Set flag to true to indicate dialog is showing
-
-        // Show dialog with resultScan and TextFormField
+        _isDialogShowing = true;
         showDialog(
           context: context,
           builder: (BuildContext context) {
             return PopScope(
               child: AlertDialog(
-                title: const Text('Scanned QR Code'),
+                title: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    gradient: LinearGradient(
+                      colors: [
+                        Colors.blue.shade900,
+                        Colors.blue.shade700,
+                        Colors.blue.shade500,
+                      ],
+                    ),
+                  ),
+                  padding: const EdgeInsets.all(20),
+                  child: Column(
+                    children: [
+                      Text(
+                        'Meteran',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: const ColorScheme.light().background),
+                      ),
+                      Text(
+                        '$resultScan',
+                        style: TextStyle(
+                            color: const ColorScheme.light().background),
+                      ),
+                    ],
+                  ),
+                ),
                 content: Column(
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(resultScan ?? 'No QR code scanned'),
+                    const Text(
+                      'Masukan jumlah pemakaian',
+                      style: TextStyle(
+                        fontSize: 12,
+                      ),
+                    ),
                     const SizedBox(height: 16),
                     TextFormField(
                       controller: textFieldController,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter something';
+                          return 'Masukan jumlah pemakaian dahulu!';
                         }
-                        return null; // Return null if the input is valid
+                        return null;
                       },
                       decoration: const InputDecoration(
-                        labelText: 'Enter something...',
+                        labelText: 'Jumlah pemakaian',
                         border: OutlineInputBorder(),
                       ),
                     ),
@@ -78,22 +105,19 @@ class _QRScannerPageState extends State<QRScannerPage> {
                       controller.stopCamera();
                       if (context.mounted) {
                         Navigator.popAndPushNamed(context, '/home');
-                      } // Close the dialog
-                      _isDialogShowing =
-                          false; // Reset flag when dialog is closed
+                      }
+                      _isDialogShowing = false;
                     },
                     child: const Text('Batal'),
                   ),
                   TextButton(
                     onPressed: () async {
                       String resultScan = scanData.code ?? '';
-                      String textFieldValue = textFieldController
-                          .text; // Assuming you have a variable to hold the TextFormField value
+                      String textFieldValue = textFieldController.text;
                       if (textFieldValue.isEmpty) {
-                        // If the TextFormField value is empty
                         EasyLoading.showError(
-                            'Please enter something'); // Show error message
-                        return; // Exit onPressed function early
+                            'Masukan jumlah pemakaian dahulu!');
+                        return;
                       }
 
                       EasyLoading.show();
@@ -102,8 +126,6 @@ class _QRScannerPageState extends State<QRScannerPage> {
                               resultScan, textFieldValue);
                       EasyLoading.dismiss();
                       if (response['status'] == 'success') {
-                        // Data stored successfully
-                        // Do something, e.g., show a success message
                         EasyLoading.showSuccess(response['msg']);
                         await Future.delayed(const Duration(seconds: 2));
                         controller.stopCamera();
@@ -111,8 +133,6 @@ class _QRScannerPageState extends State<QRScannerPage> {
                           Navigator.popAndPushNamed(context, '/home');
                         }
                       } else {
-                        // Error occurred while storing data
-                        // Do something, e.g., show an error message
                         EasyLoading.showError(response['msg']);
                         await Future.delayed(const Duration(seconds: 2));
                         controller.stopCamera();
@@ -121,8 +141,7 @@ class _QRScannerPageState extends State<QRScannerPage> {
                         }
                       }
 
-                      _isDialogShowing =
-                          false; // Reset flag when dialog is closed
+                      _isDialogShowing = false;
                     },
                     child: const Text('Kirim'),
                   ),

@@ -59,11 +59,9 @@ class _LoginPageState extends State<LoginPage> {
 
     EasyLoading.show(status: 'Loading...');
 
-    // Call AuthService login function
     Map<String, dynamic> response = await AuthService.login(email, password);
 
     if (response.containsKey('token')) {
-      // Login successful, save token and navigate to home
       await AuthService.saveToken(response['token']);
       EasyLoading.dismiss();
       EasyLoading.showSuccess(response['message']);
@@ -71,7 +69,6 @@ class _LoginPageState extends State<LoginPage> {
       if (!mounted) return;
       Navigator.popAndPushNamed(context, '/home');
     } else {
-      // Login failed, show error message
       EasyLoading.dismiss();
       EasyLoading.showError(response['message']);
     }
