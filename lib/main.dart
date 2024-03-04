@@ -18,7 +18,15 @@ class MainApp extends StatelessWidget {
     return MaterialApp(
       title: 'Your App Title',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        colorScheme: const ColorScheme.dark(
+          primary: Color.fromRGBO(177, 228, 240, 1),
+          background: Color.fromRGBO(29, 62, 83, 1),
+          primaryContainer: Color.fromRGBO(37, 75, 98, 1),
+        ),
+        useMaterial3: true,
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Color.fromRGBO(37, 75, 98, 1),
+        ),
       ),
       home: const AppStart(),
       routes: {

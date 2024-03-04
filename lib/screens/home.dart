@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pamsimas/services/auth.dart';
 
+import 'components/error_page_widget.dart';
+import 'components/main_page_widget.dart';
+import 'components/proccess_page_widget.dart';
+
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
@@ -38,14 +42,10 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
       body: _isLoading
-          ? const ProccessWidget()
+          ? const ProccessPageWidget()
           : _errorMessage.isNotEmpty
-              ? ErrorWidget(
-                  errorMessage: _errorMessage,
-                )
-              : MainPageWidget(
-                  userData: _userData,
-                ),
+              ? ErrorPageWidget(errorMessage: _errorMessage)
+              : MainPageWidget(userData: _userData),
     );
   }
 
@@ -79,115 +79,5 @@ class _HomePageState extends State<HomePage> {
         });
       }
     }
-  }
-}
-
-class ProccessWidget extends StatelessWidget {
-  const ProccessWidget({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return const Center(
-      child: CircularProgressIndicator(),
-    );
-  }
-}
-
-class ErrorWidget extends StatelessWidget {
-  const ErrorWidget({
-    super.key,
-    required String errorMessage,
-  }) : _errorMessage = errorMessage;
-
-  final String _errorMessage;
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Text(_errorMessage),
-    );
-  }
-}
-
-class MainPageWidget extends StatelessWidget {
-  const MainPageWidget({
-    super.key,
-    required Map<String, dynamic> userData,
-  }) : _userData = userData;
-
-  final Map<String, dynamic> _userData;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Expanded(
-          flex: 1,
-          child: Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                gradient: LinearGradient(
-                  colors: [
-                    Colors.blue.shade900,
-                    Colors.blue.shade700,
-                    Colors.blue.shade500,
-                  ],
-                ),
-              ),
-              child: Center(
-                child: Text(
-                  'Halo selamat datang ${_userData['user_name']}',
-                  style: TextStyle(
-                    color: const ColorScheme.light().background,
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ),
-        Expanded(
-          flex: 5,
-          child: Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                gradient: LinearGradient(
-                  colors: [
-                    Colors.blue.shade900,
-                    Colors.blue.shade700,
-                    Colors.blue.shade500,
-                  ],
-                ),
-              ),
-              child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.camera_alt_rounded,
-                      size: 100,
-                      color: const ColorScheme.light().background,
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.pushNamed(context, '/qr');
-                      },
-                      child: const Text(
-                        "Scan Disini",
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
   }
 }
